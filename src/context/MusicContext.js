@@ -7,6 +7,7 @@ const MusicContextProvider = ({ children }) => {
     {
       title: "Could you be loved",
       artiste: "Bob Marley",
+      id: 3,
     },
   ]);
   const rand = () => {
