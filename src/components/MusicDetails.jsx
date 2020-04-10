@@ -2,9 +2,9 @@ import React, { useContext } from "react";
 import { MusicContext } from "../context/MusicContext";
 
 const MusicDetails = ({ music }) => {
-  const { removeMusic } = useContext(MusicContext);
+  const { dispatch } = useContext(MusicContext);
   const remove = () => {
-    return removeMusic(music.id);
+    return dispatch({ type: "REMOVE_MUSIC", id: music.id });
   };
   return (
     <li onClick={remove}>

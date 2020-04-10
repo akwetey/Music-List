@@ -1,30 +1,20 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useReducer, useEffect } from "react";
+import musicReducer from "../reducers/musicReducer";
 
 export const MusicContext = createContext();
 
 const MusicContextProvider = ({ children }) => {
-  const [music, setMusic] = useState([
-    {
-      title: "Could you be loved",
-      artiste: "Bob Marley",
-      id: 3,
-    },
-  ]);
-  const rand = () => {
-    return Math.floor(Math.random() * 1000);
-  };
-  const addMusic = (
-    title = "Coming in from the cold",
-    artiste = "Bob Marley"
-  ) => {
-    setMusic([...music, { title, artiste, id: rand() }]);
-  };
-  const removeMusic = (id) => {
-    setMusic(music.filter((el) => el.id !== id));
-  };
+  const [music, dispatch] = useReducer(musicReducer, [], () => {
+    const storageData = localStorage.getItem("music");
+    return storageData ? JSON.parse(storageData) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("music", JSON.stringify(music));
+  }, [music]);
 
   return (
-    <MusicContext.Provider value={{ music, addMusic, removeMusic }}>
+    <MusicContext.Provider value={{ music, dispatch }}>
       {children}
     </MusicContext.Provider>
   );

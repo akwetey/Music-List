@@ -2,18 +2,26 @@ import React, { useContext, useState } from "react";
 import { MusicContext } from "../context/MusicContext";
 
 const MusicForm = () => {
-  const { addMusic } = useContext(MusicContext);
+  const { dispatch } = useContext(MusicContext);
   const [music, setMusic] = useState({
     title: "",
     artiste: "",
   });
+  const { title, artiste } = music;
   const handleOnChange = (event) => {
     const { name, value } = event.target;
     setMusic({ ...music, [name]: value });
   };
   const submitFunc = (e) => {
     e.preventDefault();
-    addMusic(music.title, music.artiste);
+
+    dispatch({
+      type: "ADD_MUSIC_LIST",
+      payload: {
+        title,
+        artiste,
+      },
+    });
     setMusic({
       title: "",
       artiste: "",
@@ -25,15 +33,17 @@ const MusicForm = () => {
         type="text"
         placeholder="Music Title"
         name="title"
-        value={music.title}
+        value={title}
         onChange={handleOnChange}
+        required
       />
       <input
         type="text"
         placeholder="Artiste"
         name="artiste"
-        value={music.artiste}
+        value={artiste}
         onChange={handleOnChange}
+        required
       />
       <input type="submit" value="Add Music List" />
     </form>
